@@ -36,50 +36,52 @@
 <body>
   <!-- App Container -->
   <div class="app-container">
-    <!-- Header -->
-    <header class="app-header">
-      <div class="header-content">
-        <div class="brand-section">
-          <span class="brand-tagline">VASEY/AI PRESENTS</span>
-          <div class="brand-title-row">
-            <div class="app-icon-wrapper">
-              <svg class="app-logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Modern minimalist wizard hat -->
-                <defs>
-                  <linearGradient id="hatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#0891b2"/>
-                    <stop offset="100%" stop-color="#0d5959"/>
-                  </linearGradient>
-                  <linearGradient id="starGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#BBFF33"/>
-                    <stop offset="100%" stop-color="#8FCC29"/>
-                  </linearGradient>
-                </defs>
-                <!-- Hat body - clean geometric shape -->
-                <path d="M24 4L8 38H40L24 4Z" fill="url(#hatGradient)" stroke="#0891b2" stroke-width="1.5"/>
-                <!-- Hat brim - simplified -->
-                <ellipse cx="24" cy="40" rx="18" ry="4" fill="url(#hatGradient)" stroke="#0891b2" stroke-width="1.5"/>
-                <!-- Single accent star -->
-                <path d="M24 14L25.5 19H30L26.5 22L28 27L24 24L20 27L21.5 22L18 19H22.5L24 14Z" fill="url(#starGradient)"/>
-                <!-- Subtle magic sparkle -->
-                <circle cx="16" cy="24" r="1" fill="#BBFF33" opacity="0.6"/>
-                <circle cx="32" cy="28" r="0.8" fill="#BBFF33" opacity="0.4"/>
-              </svg>
-            </div>
-            <div class="brand-text">
-              <h1 class="app-title">MEDIA SOURCEROR<span class="version-badge">v1.0</span></h1>
-              <span class="app-subtitle">The premium audio extraction studio.</span>
-            </div>
-          </div>
-        </div>
-        <button class="menu-btn" id="menuBtn" aria-label="Menu">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="1"></circle>
-            <circle cx="12" cy="5" r="1"></circle>
-            <circle cx="12" cy="19" r="1"></circle>
+    <!-- Floating Menu Button (positioned absolutely) -->
+    <button class="floating-menu-btn" id="menuBtn" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Hero Header - Centered like FilePhile/StyleyeS -->
+    <header class="hero-header">
+      <!-- VASEY/AI PRESENTS -->
+      <span class="brand-tagline">VASEY/AI PRESENTS</span>
+
+      <!-- Brand Row: Icon + Title + Version -->
+      <div class="brand-row">
+        <div class="app-icon-container">
+          <svg class="app-logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Modern minimalist wizard hat -->
+            <defs>
+              <linearGradient id="hatGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#0891b2"/>
+                <stop offset="100%" stop-color="#0d5959"/>
+              </linearGradient>
+              <linearGradient id="starGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#BBFF33"/>
+                <stop offset="100%" stop-color="#8FCC29"/>
+              </linearGradient>
+            </defs>
+            <!-- Hat body - clean geometric shape -->
+            <path d="M24 4L8 38H40L24 4Z" fill="url(#hatGradient)" stroke="#0891b2" stroke-width="1.5"/>
+            <!-- Hat brim - simplified -->
+            <ellipse cx="24" cy="40" rx="18" ry="4" fill="url(#hatGradient)" stroke="#0891b2" stroke-width="1.5"/>
+            <!-- Single accent star -->
+            <path d="M24 14L25.5 19H30L26.5 22L28 27L24 24L20 27L21.5 22L18 19H22.5L24 14Z" fill="url(#starGradient)"/>
+            <!-- Subtle magic sparkle -->
+            <circle cx="16" cy="24" r="1" fill="#BBFF33" opacity="0.6"/>
+            <circle cx="32" cy="28" r="0.8" fill="#BBFF33" opacity="0.4"/>
           </svg>
-        </button>
+        </div>
+        <h1 class="app-title">Media Sourceror</h1>
+        <span class="version-badge">v1.0</span>
       </div>
+
+      <!-- Subtitle -->
+      <p class="app-subtitle">The premium audio extraction studio.</p>
     </header>
 
     <!-- Main Content -->

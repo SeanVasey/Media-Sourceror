@@ -170,221 +170,171 @@ body::before {
 }
 
 /* ============================================
-   HEADER - Brand Consistent Style
-   Matches FilePhile/StyleyeS design language
+   FLOATING MENU BUTTON
+   Positioned absolutely in top-right corner
    ============================================ */
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  padding: calc(var(--safe-top) + var(--space-lg)) var(--space-md) var(--space-lg);
-  background: linear-gradient(180deg, rgba(5, 5, 5, 0.98) 0%, rgba(5, 5, 5, 0.92) 100%);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-}
-
-/* Subtle ambient glow behind header */
-.app-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 120%;
-  background: radial-gradient(ellipse at center top, var(--cyan-50) 0%, transparent 70%);
-  pointer-events: none;
-  opacity: 0.4;
-  z-index: -1;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Brand Section - FilePhile Layout */
-.brand-section {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-sm);
-}
-
-/* VASEY/AI PRESENTS - Top tagline (cyan like FilePhile) */
-.brand-tagline {
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.4em;
-  color: var(--cyan-500);
-  text-transform: uppercase;
-  order: -1;
-  text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
-}
-
-/* App Title Row */
-.brand-title-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-}
-
-/* App Icon Container - 3D Depth Effect */
-.app-icon-wrapper {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border-radius: var(--radius-md);
-  /* Multi-layer 3D depth effect */
-  background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
-  box-shadow:
-    /* Outer shadow for depth */
-    0 4px 12px rgba(0, 0, 0, 0.8),
-    0 8px 24px rgba(0, 0, 0, 0.5),
-    /* Inner highlight for 3D bevel */
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    /* Subtle cyan glow */
-    0 0 20px rgba(8, 145, 178, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* Inner glow layer */
-.app-icon-wrapper::before {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  background: linear-gradient(135deg, rgba(8, 145, 178, 0.08) 0%, transparent 60%);
-  border-radius: calc(var(--radius-md) - 2px);
-  pointer-events: none;
-}
-
-/* Bottom edge highlight for 3D */
-.app-icon-wrapper::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 10%;
-  width: 80%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
-  border-radius: var(--radius-full);
-}
-
-.app-logo {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  position: relative;
-  z-index: 1;
-  filter: drop-shadow(0 2px 8px rgba(8, 145, 178, 0.4));
-}
-
-/* Brand Text Container */
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-/* App Title - Large display font */
-.app-title {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  font-weight: 400;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  color: var(--text-primary);
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  /* Subtle text shadow for depth */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Version Badge - Turquoise Pill (like FilePhile) */
-.version-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25rem 0.75rem;
-  /* Turquoise gradient background */
-  background: linear-gradient(135deg, var(--cyan-400) 0%, var(--teal-600) 100%);
-  border: none;
-  border-radius: var(--radius-full);
-  font-family: var(--font-body);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  color: var(--color-bg-dark);
-  margin-left: var(--space-md);
-  /* 3D depth with shadow */
-  box-shadow:
-    0 2px 8px rgba(8, 145, 178, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all var(--transition-fast);
-}
-
-.version-badge:hover {
-  box-shadow:
-    0 4px 12px rgba(8, 145, 178, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transform: translateY(-1px);
-}
-
-/* Subtitle under title */
-.app-subtitle {
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  font-weight: 400;
-  color: var(--text-secondary);
-  letter-spacing: 0.01em;
-  margin-top: 2px;
-}
-
-/* Menu Button - 3D Glass Effect */
-.menu-btn {
+.floating-menu-btn {
+  position: fixed;
+  top: calc(var(--safe-top) + 16px);
+  right: 16px;
+  z-index: 200;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Layered glass background */
-  background: linear-gradient(145deg, rgba(30, 30, 30, 0.9) 0%, rgba(15, 15, 15, 0.95) 100%);
+  background: linear-gradient(145deg, rgba(25, 25, 25, 0.95) 0%, rgba(12, 12, 12, 0.98) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-md);
   color: var(--text-tertiary);
   cursor: pointer;
   transition: all var(--transition-fast);
-  /* 3D depth */
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.6),
+    0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-.menu-btn:hover, .menu-btn:focus {
-  background: linear-gradient(145deg, rgba(40, 40, 40, 0.9) 0%, rgba(20, 20, 20, 0.95) 100%);
+.floating-menu-btn:hover,
+.floating-menu-btn:focus {
+  background: linear-gradient(145deg, rgba(35, 35, 35, 0.95) 0%, rgba(18, 18, 18, 0.98) 100%);
   border-color: rgba(255, 255, 255, 0.1);
   color: var(--cyan-500);
   box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    0 0 16px rgba(8, 145, 178, 0.15),
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 24px rgba(8, 145, 178, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.menu-btn:active {
+.floating-menu-btn:active {
   transform: scale(0.95);
+}
+
+/* ============================================
+   HERO HEADER - Centered Layout
+   Matches FilePhile/StyleyeS design exactly
+   ============================================ */
+.hero-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--safe-top) + 48px) 24px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ambient glow behind hero */
+.hero-header::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 160%;
+  background: radial-gradient(ellipse at center 30%, var(--teal-900) 0%, transparent 60%);
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* VASEY/AI PRESENTS - Cyan tagline at top */
+.brand-tagline {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  color: var(--cyan-500);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  text-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+}
+
+/* Brand Row: Icon + Title + Version Badge */
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* App Icon Container - Rounded square like FilePhile */
+.app-icon-container {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
   box-shadow:
-    0 1px 4px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    0 6px 20px rgba(0, 0, 0, 0.8),
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 30px rgba(8, 145, 178, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Subtle inner glow */
+.app-icon-container::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.1) 0%, transparent 50%);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.app-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 12px rgba(8, 145, 178, 0.5));
+}
+
+/* App Title - Large display font like FilePhile */
+.app-title {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--text-primary);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Version Badge - Turquoise pill */
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  background: linear-gradient(135deg, var(--cyan-400) 0%, var(--teal-600) 100%);
+  border: none;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-bg-dark);
+  box-shadow:
+    0 4px 12px rgba(8, 145, 178, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Subtitle - Light gray below */
+.app-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
 }
 
 /* ============================================
@@ -1622,8 +1572,48 @@ body::before {
 }
 
 @media (min-width: 768px) {
+  /* Hero header scales up on larger screens */
+  .hero-header {
+    padding: calc(var(--safe-top) + 64px) 32px 56px;
+  }
+
+  .brand-tagline {
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    margin-bottom: 36px;
+  }
+
+  .app-icon-container {
+    width: 88px;
+    height: 88px;
+    border-radius: 20px;
+  }
+
+  .app-icon-container::before {
+    border-radius: 18px;
+  }
+
+  .app-logo {
+    width: 58px;
+    height: 58px;
+  }
+
   .app-title {
-    font-size: 2rem;
+    font-size: 3.5rem;
+  }
+
+  .version-badge {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+  }
+
+  .app-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .brand-row {
+    gap: 20px;
+    margin-bottom: 20px;
   }
 
   .section-title {
@@ -1653,7 +1643,8 @@ body::before {
 
 /* Print styles */
 @media print {
-  .app-header,
+  .hero-header,
+  .floating-menu-btn,
   .app-footer,
   .upload-section,
   .processing-section,
