@@ -1,6 +1,9 @@
 /**
  * Media Sourceror - Main Application
  * AI-powered audio extraction and analysis tool
+ *
+ * @version 1.2.0
+ * @bugfix Now passes preserveSampleRate setting to AudioProcessor
  */
 
 class MediaSourcerorApp {
@@ -158,6 +161,10 @@ class MediaSourcerorApp {
     this.elements.preserveSampleRate.addEventListener('change', (e) => {
       this.settings.preserveSampleRate = e.target.checked;
       this.saveSettings();
+      // Update processor settings
+      if (this.processor) {
+        this.processor.updateSettings({ preserveSampleRate: e.target.checked });
+      }
     });
 
     this.elements.autoDetectMusic.addEventListener('change', (e) => {
@@ -177,9 +184,13 @@ class MediaSourcerorApp {
 
   /**
    * Initialize audio processor
+   * @bugfix Now passes settings to AudioProcessor
    */
   async initAudioProcessor() {
-    this.processor = new AudioProcessor();
+    this.processor = new AudioProcessor({
+      preserveSampleRate: this.settings.preserveSampleRate,
+      useWebWorker: true
+    });
 
     this.processor.onProgress = (percent) => {
       this.updateProgress(percent);

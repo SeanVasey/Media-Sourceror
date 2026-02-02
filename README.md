@@ -2,7 +2,7 @@
 
 > AI-powered audio extraction and analysis tool
 
-[![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](CHANGELOG.md)
 [![Security](https://img.shields.io/badge/security-fixes%20applied-green.svg)](SECURITY.md)
 
 Media Sourceror is a personal-use Progressive Web App (PWA) for extracting high-quality audio from multimedia sources. It runs entirely in the browser using WebAssembly-based audio processing.

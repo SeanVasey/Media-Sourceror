@@ -5,6 +5,23 @@ All notable changes to Media Sourceror will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-02-02
+
+### Bug Fixes
+- **preserveSampleRate setting not used**: The UI setting for preserving original sample rate was saved to localStorage but never passed to AudioProcessor. Now correctly respects user preference for all sample rates.
+- **Web Worker not integrated**: The `analysis-worker.js` was created but never instantiated. AudioProcessor now properly initializes and uses the Web Worker for non-blocking tempo and key detection.
+
+### Changed
+- `js/audio-processor.js` - Now accepts settings in constructor, implements Web Worker integration, preserves all sample rates when setting enabled
+- `js/app.js` - Now passes settings to AudioProcessor on init and updates them when changed
+- `sw.js` - Updated cache version to v1.2.0
+
+### Technical Details
+- AudioProcessor constructor now accepts `{ preserveSampleRate, useWebWorker }` options
+- Added `updateSettings()` method to AudioProcessor for runtime setting changes
+- Added `analyzeAudio()` method that delegates to Web Worker with main thread fallback
+- Sample rates from 8kHz to 384kHz are now preserved when setting is enabled
+
 ## [1.1.0] - 2026-02-02
 
 ### Security Fixes

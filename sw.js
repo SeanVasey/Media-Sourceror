@@ -1,4 +1,4 @@
-const CACHE_NAME = 'media-sourceror-v1.1.0';
+const CACHE_NAME = 'media-sourceror-v1.2.0';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
