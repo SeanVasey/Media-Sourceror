@@ -189,20 +189,12 @@ class AudioProcessor {
       this.updateProgress(20);
 
       // Load FFmpeg core - using single-threaded version for compatibility
-      // This version doesn't require SharedArrayBuffer/COOP/COEP headers
-      try {
-        await this.ffmpeg.load({
-          coreURL: 'https://unpkg.com/@ffmpeg/core-st@0.12.6/dist/umd/ffmpeg-core.js',
-          wasmURL: 'https://unpkg.com/@ffmpeg/core-st@0.12.6/dist/umd/ffmpeg-core.wasm',
-        });
-      } catch (loadError) {
-        console.warn('[AudioProcessor] Single-threaded core failed, trying multi-threaded...', loadError);
-        // Fallback to multi-threaded if single-threaded fails
-        await this.ffmpeg.load({
-          coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-          wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
-        });
-      }
+      // Note: @ffmpeg/core@0.12.x is single-threaded (@ffmpeg/core-mt is multi-threaded)
+      // SharedArrayBuffer is enabled via coi-serviceworker for GitHub Pages compatibility
+      await this.ffmpeg.load({
+        coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+        wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
+      });
 
       this.isLoaded = true;
       this.updateStage('Audio engine ready');

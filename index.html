@@ -433,6 +433,9 @@
   <!-- Audio Element (Hidden) -->
   <audio id="audioPlayer" preload="metadata"></audio>
 
+  <!-- Cross-Origin Isolation Service Worker (enables SharedArrayBuffer for FFmpeg.wasm) -->
+  <script src="coi-serviceworker.js"></script>
+
   <!-- Scripts -->
   <script>
     // FFmpeg.wasm setup - expose modules globally

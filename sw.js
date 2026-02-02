@@ -3,6 +3,7 @@ const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/css/styles.css',
+  '/coi-serviceworker.js',
   '/js/app.js',
   '/js/audio-processor.js',
   '/js/fft.js',
