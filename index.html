@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0d9488">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Media Sourceror">
+  <meta name="description" content="AI-powered audio extraction and analysis tool - Extract high-quality audio from any media source">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-192.png">
+
+  <!-- iOS Splash Screens -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-startup-image" href="icons/icon-512.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Reddit+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+
+  <title>Media Sourceror</title>
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div class="brand-section">
+          <div class="app-icon-wrapper">
+            <img src="icons/app-icon.svg" alt="Media Sourceror" class="app-logo">
+          </div>
+          <div class="brand-text">
+            <h1 class="app-title">MEDIA SOURCEROR</h1>
+            <span class="brand-tagline">VASEY/AI</span>
+          </div>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="12" cy="5" r="1"></circle>
+            <circle cx="12" cy="19" r="1"></circle>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Upload Section -->
+      <section class="upload-section" id="uploadSection">
+        <div class="section-header">
+          <h2 class="section-title">EXTRACT AUDIO</h2>
+          <p class="section-subtitle">Drop media or enter URL to begin</p>
+        </div>
+
+        <!-- URL Input -->
+        <div class="url-input-container glass-panel">
+          <div class="input-wrapper">
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <input type="url" id="urlInput" placeholder="Paste media URL here..." autocomplete="off">
+            <button class="url-submit-btn" id="urlSubmitBtn" aria-label="Process URL">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Drop Zone -->
+        <div class="drop-zone glass-panel" id="dropZone">
+          <div class="drop-zone-content">
+            <div class="drop-icon-container">
+              <svg class="drop-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <div class="drop-icon-ring"></div>
+            </div>
+            <p class="drop-text">Drag & drop media file</p>
+            <p class="drop-subtext">or click to browse</p>
+            <div class="supported-formats">
+              <span class="format-badge">MP4</span>
+              <span class="format-badge">MOV</span>
+              <span class="format-badge">AVI</span>
+              <span class="format-badge">MKV</span>
+              <span class="format-badge">WEBM</span>
+              <span class="format-badge">MP3</span>
+              <span class="format-badge">WAV</span>
+              <span class="format-badge">M4A</span>
+            </div>
+          </div>
+          <input type="file" id="fileInput" accept="audio/*,video/*" hidden>
+        </div>
+      </section>
+
+      <!-- Processing Section (Hidden by default) -->
+      <section class="processing-section hidden" id="processingSection">
+        <div class="glass-panel processing-panel">
+          <div class="processing-header">
+            <h3 class="processing-title">ANALYZING MEDIA</h3>
+            <button class="cancel-btn" id="cancelBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div class="file-info">
+            <div class="file-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+            </div>
+            <div class="file-details">
+              <span class="file-name" id="fileName">filename.mp4</span>
+              <span class="file-size" id="fileSize">0 MB</span>
+            </div>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+              <div class="progress-glow"></div>
+            </div>
+            <div class="progress-info">
+              <span class="progress-stage" id="progressStage">Initializing...</span>
+              <span class="progress-percent" id="progressPercent">0%</span>
+            </div>
+          </div>
+
+          <div class="processing-steps">
+            <div class="step" id="step1">
+              <div class="step-indicator">
+                <svg class="step-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="step-spinner"></div>
+              </div>
+              <span class="step-label">Loading media</span>
+            </div>
+            <div class="step" id="step2">
+              <div class="step-indicator">
+                <svg class="step-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="step-spinner"></div>
+              </div>
+              <span class="step-label">Detecting audio streams</span>
+            </div>
+            <div class="step" id="step3">
+              <div class="step-indicator">
+                <svg class="step-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="step-spinner"></div>
+              </div>
+              <span class="step-label">Analyzing audio properties</span>
+            </div>
+            <div class="step" id="step4">
+              <div class="step-indicator">
+                <svg class="step-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="step-spinner"></div>
+              </div>
+              <span class="step-label">Detecting tempo & key</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Section (Hidden by default) -->
+      <section class="results-section hidden" id="resultsSection">
+        <div class="section-header">
+          <h2 class="section-title">AUDIO EXTRACTED</h2>
+          <button class="new-extract-btn" id="newExtractBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            New Extract
+          </button>
+        </div>
+
+        <!-- Audio Info Card -->
+        <div class="audio-info-card glass-panel" id="audioInfoCard">
+          <div class="audio-waveform" id="waveformContainer">
+            <canvas id="waveformCanvas"></canvas>
+            <div class="waveform-overlay"></div>
+          </div>
+
+          <div class="audio-player">
+            <button class="play-btn" id="playBtn">
+              <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <svg class="pause-icon hidden" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+            </button>
+            <div class="time-display">
+              <span id="currentTime">0:00</span>
+              <span class="time-separator">/</span>
+              <span id="totalTime">0:00</span>
+            </div>
+            <div class="seek-bar-container">
+              <input type="range" class="seek-bar" id="seekBar" min="0" max="100" value="0">
+            </div>
+          </div>
+
+          <div class="audio-metadata">
+            <div class="metadata-grid">
+              <div class="metadata-item">
+                <span class="metadata-label">Duration</span>
+                <span class="metadata-value" id="metaDuration">--:--</span>
+              </div>
+              <div class="metadata-item">
+                <span class="metadata-label">Sample Rate</span>
+                <span class="metadata-value" id="metaSampleRate">-- kHz</span>
+              </div>
+              <div class="metadata-item">
+                <span class="metadata-label">Channels</span>
+                <span class="metadata-value" id="metaChannels">--</span>
+              </div>
+              <div class="metadata-item">
+                <span class="metadata-label">Bit Depth</span>
+                <span class="metadata-value" id="metaBitDepth">-- bit</span>
+              </div>
+            </div>
+
+            <div class="music-analysis">
+              <div class="analysis-item tempo-item">
+                <div class="analysis-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+                <div class="analysis-content">
+                  <span class="analysis-label">Tempo</span>
+                  <span class="analysis-value" id="metaTempo">-- BPM</span>
+                </div>
+              </div>
+              <div class="analysis-item key-item">
+                <div class="analysis-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18V5l12-2v13"></path>
+                    <circle cx="6" cy="18" r="3"></circle>
+                    <circle cx="18" cy="16" r="3"></circle>
+                  </svg>
+                </div>
+                <div class="analysis-content">
+                  <span class="analysis-label">Key</span>
+                  <span class="analysis-value" id="metaKey">--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Options -->
+        <div class="download-section">
+          <h3 class="download-title">DOWNLOAD FORMAT</h3>
+          <div class="format-options">
+            <button class="format-btn" data-format="flac">
+              <div class="format-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+              </div>
+              <span class="format-name">FLAC</span>
+              <span class="format-desc">Lossless</span>
+            </button>
+            <button class="format-btn" data-format="wav">
+              <div class="format-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+              </div>
+              <span class="format-name">WAV</span>
+              <span class="format-desc">Uncompressed</span>
+            </button>
+            <button class="format-btn" data-format="mp3">
+              <div class="format-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+              </div>
+              <span class="format-name">MP3</span>
+              <span class="format-desc">320 kbps</span>
+            </button>
+            <button class="format-btn" data-format="aac">
+              <div class="format-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+              </div>
+              <span class="format-name">AAC</span>
+              <span class="format-desc">256 kbps</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Download Progress (Hidden by default) -->
+        <div class="download-progress glass-panel hidden" id="downloadProgress">
+          <div class="download-progress-content">
+            <div class="download-spinner"></div>
+            <span class="download-status" id="downloadStatus">Preparing download...</span>
+          </div>
+          <div class="download-bar">
+            <div class="download-bar-fill" id="downloadBarFill"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <div class="footer-logos">
+          <a href="#" class="footer-logo-link" title="Vasey Multimedia">
+            <img src="VM-Logo-White.svg" alt="Vasey Multimedia" class="footer-logo vm-logo">
+          </a>
+          <a href="#" class="footer-logo-link" title="VASEY.AUDIO">
+            <img src="VA-Logo-White.svg" alt="VASEY.AUDIO" class="footer-logo va-logo">
+          </a>
+        </div>
+        <div class="footer-text">
+          <span class="footer-brand">VASEY/AI</span>
+          <span class="footer-divider">|</span>
+          <span class="footer-copyright">Media Sourceror</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Settings Panel (Hidden by default) -->
+    <div class="settings-panel hidden" id="settingsPanel">
+      <div class="settings-overlay" id="settingsOverlay"></div>
+      <div class="settings-content glass-panel">
+        <div class="settings-header">
+          <h3 class="settings-title">SETTINGS</h3>
+          <button class="settings-close" id="settingsClose">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="settings-body">
+          <div class="setting-item">
+            <span class="setting-label">Preserve Original Sample Rate</span>
+            <label class="toggle">
+              <input type="checkbox" id="preserveSampleRate" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Auto-detect Tempo & Key</span>
+            <label class="toggle">
+              <input type="checkbox" id="autoDetectMusic" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Show Waveform</span>
+            <label class="toggle">
+              <input type="checkbox" id="showWaveform" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-footer">
+          <span class="version-text">v1.0.0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+  </div>
+
+  <!-- Audio Element (Hidden) -->
+  <audio id="audioPlayer" preload="metadata"></audio>
+
+  <!-- Scripts -->
+  <script>
+    // FFmpeg.wasm setup - expose modules globally
+    window.FFmpegWASM = {};
+    window.FFmpegUtil = {};
+  </script>
+  <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.7/dist/umd/ffmpeg.js" onload="window.FFmpegWASM.FFmpeg = FFmpegWASM.FFmpeg"></script>
+  <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js" onload="window.FFmpegUtil.fetchFile = FFmpegUtil.fetchFile"></script>
+  <script src="js/tempo-detector.js"></script>
+  <script src="js/key-detector.js"></script>
+  <script src="js/audio-processor.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
