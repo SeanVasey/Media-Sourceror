@@ -131,23 +131,37 @@ class AudioProcessor {
 
   /**
    * Initialize FFmpeg
+   * Uses single-threaded core for compatibility with GitHub Pages (no SharedArrayBuffer required)
    */
   async initialize() {
     if (this.isLoaded) return true;
 
     try {
       this.updateStage('Loading FFmpeg...');
+      this.updateProgress(5);
 
       // Wait for FFmpeg to be available from CDN
       let attempts = 0;
-      while ((!window.FFmpegWASM?.FFmpeg || !window.FFmpegUtil?.fetchFile) && attempts < 50) {
+      const maxAttempts = 100; // 10 seconds max wait
+      while ((!window.FFmpegWASM?.FFmpeg || !window.FFmpegUtil?.fetchFile) && attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 100));
         attempts++;
+        // Update progress during loading
+        if (attempts % 10 === 0) {
+          this.updateProgress(5 + Math.min(attempts / 10, 10));
+        }
       }
 
       if (!window.FFmpegWASM?.FFmpeg) {
-        throw new Error('FFmpeg failed to load from CDN');
+        throw new Error('FFmpeg library failed to load. Please check your internet connection and try again.');
       }
+
+      if (!window.FFmpegUtil?.fetchFile) {
+        throw new Error('FFmpeg utilities failed to load. Please check your internet connection and try again.');
+      }
+
+      this.updateStage('Initializing audio engine...');
+      this.updateProgress(15);
 
       // Access FFmpeg from the global scope (loaded via CDN)
       const FFmpeg = window.FFmpegWASM.FFmpeg;
@@ -159,7 +173,9 @@ class AudioProcessor {
       // Set up progress handler
       this.ffmpeg.on('progress', ({ progress }) => {
         if (this.onProgress) {
-          this.onProgress(Math.round(progress * 100));
+          // Map FFmpeg progress (0-1) to our progress range (25-90)
+          const mappedProgress = 25 + Math.round(progress * 65);
+          this.onProgress(mappedProgress);
         }
       });
 
@@ -169,19 +185,35 @@ class AudioProcessor {
         this.parseFFmpegLog(message);
       });
 
-      // Load FFmpeg core
-      await this.ffmpeg.load({
-        coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
-        wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
-      });
+      this.updateStage('Loading audio processing core...');
+      this.updateProgress(20);
+
+      // Load FFmpeg core - using single-threaded version for compatibility
+      // This version doesn't require SharedArrayBuffer/COOP/COEP headers
+      try {
+        await this.ffmpeg.load({
+          coreURL: 'https://unpkg.com/@ffmpeg/core-st@0.12.6/dist/umd/ffmpeg-core.js',
+          wasmURL: 'https://unpkg.com/@ffmpeg/core-st@0.12.6/dist/umd/ffmpeg-core.wasm',
+        });
+      } catch (loadError) {
+        console.warn('[AudioProcessor] Single-threaded core failed, trying multi-threaded...', loadError);
+        // Fallback to multi-threaded if single-threaded fails
+        await this.ffmpeg.load({
+          coreURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.js',
+          wasmURL: 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd/ffmpeg-core.wasm',
+        });
+      }
 
       this.isLoaded = true;
-      this.updateStage('FFmpeg ready');
+      this.updateStage('Audio engine ready');
+      this.updateProgress(25);
 
+      console.log('[AudioProcessor] FFmpeg initialized successfully');
       return true;
     } catch (error) {
-      console.error('Failed to load FFmpeg:', error);
-      throw new Error('Failed to initialize audio processor');
+      console.error('[AudioProcessor] Failed to load FFmpeg:', error);
+      this.updateStage('Error loading audio engine');
+      throw new Error(error.message || 'Failed to initialize audio processor. Please refresh and try again.');
     }
   }
 
