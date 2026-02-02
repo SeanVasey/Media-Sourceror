@@ -672,8 +672,9 @@ class MediaSourcerorApp {
 
     toast.innerHTML = `
       <span class="toast-icon ${type}">${icons[type]}</span>
-      <span class="toast-message">${message}</span>
+      <span class="toast-message"></span>
     `;
+    toast.querySelector('.toast-message').textContent = message;
 
     this.elements.toastContainer.appendChild(toast);
 
