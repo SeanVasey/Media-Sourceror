@@ -1,12 +1,14 @@
-const CACHE_NAME = 'media-sourceror-v1';
+const CACHE_NAME = 'media-sourceror-v1.1.0';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/css/styles.css',
   '/js/app.js',
   '/js/audio-processor.js',
+  '/js/fft.js',
   '/js/tempo-detector.js',
   '/js/key-detector.js',
+  '/js/analysis-worker.js',
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png',

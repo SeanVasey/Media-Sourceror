@@ -2,6 +2,9 @@
  * Key Detector Module
  * Detects musical key using chromagram analysis and key profile matching
  * Based on the Krumhansl-Schmuckler key-finding algorithm
+ *
+ * @version 1.1.0
+ * @security-fix MS2-[critical] - Replaced O(N²) DFT with O(N log N) FFT
  */
 
 class KeyDetector {
@@ -18,6 +21,8 @@ class KeyDetector {
 
     this.sampleRate = 44100;
     this.fftSize = 8192;
+    // Use cached FFT instance for performance
+    this.fft = null;
   }
 
   /**
@@ -96,30 +101,25 @@ class KeyDetector {
   }
 
   /**
-   * Compute magnitude spectrum
+   * Compute magnitude spectrum using optimized FFT
+   * O(N log N) complexity - fixes MS2-[critical] performance issue
    */
   computeSpectrum(frame) {
     const n = frame.length;
-    const spectrum = new Float32Array(n / 2);
 
-    // Apply Hanning window
+    // Initialize or get cached FFT instance
+    if (!this.fft || this.fft.size !== n) {
+      this.fft = window.fftCache ? window.fftCache.get(n) : new FFT(n);
+    }
+
+    // Copy frame and apply Hanning window
     const windowed = new Float32Array(n);
     for (let i = 0; i < n; i++) {
       windowed[i] = frame[i] * (0.5 - 0.5 * Math.cos(2 * Math.PI * i / n));
     }
 
-    // DFT computation
-    for (let k = 0; k < n / 2; k++) {
-      let real = 0, imag = 0;
-      for (let t = 0; t < n; t++) {
-        const angle = 2 * Math.PI * k * t / n;
-        real += windowed[t] * Math.cos(angle);
-        imag -= windowed[t] * Math.sin(angle);
-      }
-      spectrum[k] = Math.sqrt(real * real + imag * imag);
-    }
-
-    return spectrum;
+    // Use optimized FFT (O(N log N) instead of O(N²) DFT)
+    return this.fft.getMagnitudeSpectrum(windowed);
   }
 
   /**
