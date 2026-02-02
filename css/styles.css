@@ -949,6 +949,12 @@ body::before {
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 0 12px rgba(8, 145, 178, 0.5);
+  transition: all var(--transition-fast);
+}
+
+.seek-bar::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 20px rgba(8, 145, 178, 0.6);
 }
 
 /* Audio Metadata */
