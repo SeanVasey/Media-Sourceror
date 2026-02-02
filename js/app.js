@@ -187,18 +187,25 @@ class MediaSourcerorApp {
    * @bugfix Now passes settings to AudioProcessor
    */
   async initAudioProcessor() {
-    this.processor = new AudioProcessor({
-      preserveSampleRate: this.settings.preserveSampleRate,
-      useWebWorker: true
-    });
+    try {
+      this.processor = new AudioProcessor({
+        preserveSampleRate: this.settings.preserveSampleRate,
+        useWebWorker: true
+      });
 
-    this.processor.onProgress = (percent) => {
-      this.updateProgress(percent);
-    };
+      this.processor.onProgress = (percent) => {
+        this.updateProgress(percent);
+      };
 
-    this.processor.onStageChange = (stage) => {
-      this.updateStage(stage);
-    };
+      this.processor.onStageChange = (stage) => {
+        this.updateStage(stage);
+      };
+
+      console.log('[MediaSourceror] Audio processor created');
+    } catch (error) {
+      console.error('[MediaSourceror] Failed to create audio processor:', error);
+      this.showToast('Failed to initialize audio engine', 'error');
+    }
   }
 
   /**
@@ -309,16 +316,30 @@ class MediaSourcerorApp {
       this.resetProgress();
 
       // Initialize processor if needed
-      if (!this.processor.isLoaded) {
+      if (!this.processor || !this.processor.isLoaded) {
         this.setStepActive('step1');
-        await this.processor.initialize();
-        this.setStepCompleted('step1');
+        this.updateStage('Loading audio engine...');
+
+        // Ensure processor exists
+        if (!this.processor) {
+          await this.initAudioProcessor();
+        }
+
+        try {
+          await this.processor.initialize();
+          this.setStepCompleted('step1');
+        } catch (initError) {
+          console.error('[MediaSourceror] Initialization failed:', initError);
+          throw new Error('Failed to load audio engine. Please refresh the page and try again.');
+        }
       } else {
         this.setStepCompleted('step1');
+        this.updateProgress(25);
       }
 
       // Process the media
       this.setStepActive('step2');
+      this.updateStage(type === 'file' ? 'Processing file...' : 'Fetching media...');
       let result;
 
       if (type === 'file') {
@@ -329,6 +350,7 @@ class MediaSourcerorApp {
 
       this.setStepCompleted('step2');
       this.setStepActive('step3');
+      this.updateStage('Analyzing audio...');
 
       // Short delay for UI
       await this.delay(300);
@@ -336,6 +358,7 @@ class MediaSourcerorApp {
 
       if (this.settings.autoDetectMusic) {
         this.setStepActive('step4');
+        this.updateStage('Detecting tempo & key...');
         await this.delay(500);
         this.setStepCompleted('step4');
       }
@@ -346,12 +369,16 @@ class MediaSourcerorApp {
       // Generate waveform data
       this.waveformData = this.processor.generateWaveformData(200);
 
+      // Update progress to 100%
+      this.updateProgress(100);
+      this.updateStage('Complete!');
+
       // Show results
       this.showResults(result);
 
     } catch (error) {
-      console.error('Processing error:', error);
-      this.showToast(error.message || 'Failed to process media', 'error');
+      console.error('[MediaSourceror] Processing error:', error);
+      this.showToast(error.message || 'Failed to process media. Please try again.', 'error');
       this.resetToUpload();
     }
   }
