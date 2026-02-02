@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Icon Generator - Media Sourceror</title>
+  <style>
+    body { font-family: system-ui; padding: 20px; background: #1a1a1a; color: white; }
+    .icons { display: flex; flex-wrap: wrap; gap: 20px; }
+    .icon-item { text-align: center; }
+    canvas { border: 1px solid #333; background: #0a0a0a; }
+    button { margin: 20px 0; padding: 15px 30px; font-size: 16px; cursor: pointer; background: #0d9488; color: white; border: none; border-radius: 8px; }
+    button:hover { background: #0891b2; }
+    a { color: #22d3ee; }
+  </style>
+</head>
+<body>
+  <h1>Media Sourceror Icon Generator</h1>
+  <p>Click the button below to generate and download all PNG icons.</p>
+  <button onclick="generateAllIcons()">Generate & Download All Icons</button>
+  <div class="icons" id="icons"></div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+
+    async function generateIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // Load SVG
+      const img = new Image();
+      img.src = 'icons/icon-512.svg';
+
+      return new Promise((resolve) => {
+        img.onload = () => {
+          ctx.drawImage(img, 0, 0, size, size);
+          canvas.toBlob((blob) => {
+            resolve({ size, blob, canvas });
+          }, 'image/png');
+        };
+      });
+    }
+
+    async function generateAllIcons() {
+      const container = document.getElementById('icons');
+      container.innerHTML = '<p>Generating icons...</p>';
+
+      const results = await Promise.all(sizes.map(size => generateIcon(size)));
+
+      container.innerHTML = '';
+
+      for (const { size, blob, canvas } of results) {
+        const div = document.createElement('div');
+        div.className = 'icon-item';
+
+        const clonedCanvas = canvas.cloneNode();
+        clonedCanvas.getContext('2d').drawImage(canvas, 0, 0);
+        clonedCanvas.style.width = Math.min(size, 128) + 'px';
+        clonedCanvas.style.height = Math.min(size, 128) + 'px';
+
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `icon-${size}.png`;
+        link.textContent = `Download ${size}x${size}`;
+
+        div.appendChild(clonedCanvas);
+        div.appendChild(document.createElement('br'));
+        div.appendChild(link);
+        container.appendChild(div);
+
+        // Auto-download
+        link.click();
+      }
+    }
+  </script>
+</body>
+</html>
